@@ -600,6 +600,7 @@ class Module:
                         self.__code_object__ = compile(source, __file__, "exec",
                                                        optimize=self.__optimize__)
                     except Exception as details:
+                        print("error")
                         import traceback; traceback.print_exc()
                         raise RuntimeError("compiling %r" % self) from None
                 elif hasattr(self, "__file__") and not self.__file__.endswith(".pyd"):

@@ -59,6 +59,7 @@ if sys.frozen == "windows_exe":
                 try:
                     self._file = open(fname, 'a')
                 except Exception as details:
+                    print("error2")
                     self._error = details
                     atexit.register(alert, 0,
                                     "The logfile '%s' could not be opened:\n %s" % \

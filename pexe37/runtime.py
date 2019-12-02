@@ -515,15 +515,19 @@ class Runtime(object):
             return
 
         for src in self.mf.real_dlls():
-            # Strange, but was tested with numpy built with
-            # libiomp5md.dll...
-            if self.options.bundle_files == 3:
-                extdlldir = libdir
-            else:
-                extdlldir = destdir
-            if self.options.verbose:
-                print("Copy DLL %s to %s" % (src, extdlldir))
-            shutil.copy2(src, extdlldir)
+            try:
+                # Strange, but was tested with numpy built with
+                # libiomp5md.dll...
+                if self.options.bundle_files == 3:
+                    extdlldir = libdir
+                else:
+                    extdlldir = destdir
+                if self.options.verbose:
+                    print("Copy DLL %s to %s" % (src, extdlldir))
+                shutil.copy2(src, extdlldir)
+            except Exception as e:
+                print("HEREEE")
+                raise(e)
 
         # lib files from modulefinder
         for name, src in self.mf._lib_files.items():
