@@ -1,9 +1,7 @@
 #!/usr/bin/python3.3
 # -*- coding: utf-8 -*-
-"""setup script for py2exe.
+"""setup script for pexe37.
 """
-from setuptools import setup
-from pexe37.pexe37_distutils import Dist, Interpreter, BuildInterpreters
 
 import os
 import sys
@@ -13,11 +11,12 @@ if sys.version_info < (3, 3):
 
 ############################################################################
 
+from setuptools import setup
 ##from distutils.core import setup
 
+from pexe37.pexe37_distutils import Dist, Interpreter, BuildInterpreters
 
 ############################################################################
-
 
 def _is_debug_build():
     import imp
@@ -26,27 +25,23 @@ def _is_debug_build():
             return True
     return False
 
-
 if _is_debug_build():
     macros = [("PYTHONDLL", '\\"python%d%d_d.dll\\"' % sys.version_info[:2]),
-              ##              ("PYTHONCOM", '\\"pythoncom%d%d_d.dll\\"' % sys.version_info[:2]),
+##              ("PYTHONCOM", '\\"pythoncom%d%d_d.dll\\"' % sys.version_info[:2]),
               ("_CRT_SECURE_NO_WARNINGS", '1')]
 else:
     macros = [("PYTHONDLL", '\\"python%d%d.dll\\"' % sys.version_info[:2]),
-              ##              ("PYTHONCOM", '\\"pythoncom%d%d.dll\\"' % sys.version_info[:2]),
-              ("_CRT_SECURE_NO_WARNINGS", '1'), ]
+##              ("PYTHONCOM", '\\"pythoncom%d%d.dll\\"' % sys.version_info[:2]),
+              ("_CRT_SECURE_NO_WARNINGS", '1'),]
 
 macros.append(("Py_BUILD_CORE", '1'))
 
 extra_compile_args = []
 extra_link_args = []
 
-extra_compile_args.append(
-    "-IC:\\Program Files\\Microsoft SDKs\\Windows\\v7.0\\Include")
-extra_compile_args.append(
-    "-IC:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include")
-extra_compile_args.append(
-    "-IC:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10586.0\\ucrt")
+extra_compile_args.append("-IC:\\Program Files\\Microsoft SDKs\\Windows\\v7.0\\Include")
+extra_compile_args.append("-IC:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include")
+extra_compile_args.append("-IC:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10586.0\\ucrt")
 
 if 0:
     # enable this to debug a release build
@@ -73,7 +68,7 @@ run_ctypes_dll = Interpreter("pexe37.run_ctypes_dll",
                                              "DllRegisterServer,PRIVATE",
                                              "DllUnregisterServer,PRIVATE",
                                              ],
-                             target_desc="shared_library",
+                             target_desc = "shared_library",
                              define_macros=macros,
                              extra_compile_args=extra_compile_args,
                              extra_link_args=extra_link_args + ["/DLL"],
@@ -115,11 +110,19 @@ run_w = Interpreter("pexe37.run_w",
                     extra_link_args=extra_link_args,
                     )
 
-
+# The pexe37.resources name is special handled in BuildInterpreters;
+# it will not include the python version and platform name. The final
+# name will be 'resources.dll'.
+#
+# This is a resource only dll, so it needs no entry point.
+#
+# It seems that on SOME systems resources cannot be added correctly to
+# this DLL when there are no resources in the dll initially; so for
+# simplicity add the pexe37-icon.
 resource_dll = Interpreter("pexe37.resources",
                            ["source/dll.c",
                             "source/icon.rc"],
-                           target_desc="shared_library",
+                           target_desc = "shared_library",
                            extra_link_args=["/DLL"],
                            )
 
@@ -134,13 +137,16 @@ if __name__ == "__main__":
 
     setup(name="pexe37",
           version=pexe37.__version__,
-          description="Python to Executable",
-          author="darkArp",
-          author_email="marionascimento@itsec.bz",
+          description="Build standalone executables for Windows (python 3 version)",
+          long_description=open("README_ORIGINAL.rst").read(),
+          author="Thomas Heller",
+          author_email="theller@ctypes.org",
+    ##      maintainer="Jimmy Retzlaff",
+    ##      maintainer_email="jimmy@retzlaff.com",
+          url="http://www.pexe37.org/",
           license="MIT/X11",
-          install_requires=["cachetools", "pefile"],
           platforms="Windows",
-          download_url=f"https://github.com/darkarp/pexe37/archive/v{pexe37.__version__}.zip",
+    ##      download_url="http://sourceforge.net/project/showfiles.php?group_id=15583",
 
           classifiers=[
               "Development Status :: 4 - Beta",
@@ -157,16 +163,22 @@ if __name__ == "__main__":
               "Topic :: Software Development :: Libraries :: Python Modules",
               "Topic :: System :: Software Distribution",
               "Topic :: Utilities",
-          ],
+              ],
 
-          distclass=Dist,
-          cmdclass=cmdclass,
-          scripts=["build_exe.py"],
-          entry_points={
+          distclass = Dist,
+          cmdclass = cmdclass,
+##          scripts = ["build_exe.py"],
+          entry_points = {
               'console_scripts': ['build_exe = pexe37.build_exe:main'],
-          },
-          interpreters=interpreters,
+              },
+          interpreters = interpreters,
           py_modules=['zipextimporter'],
           packages=['pexe37'],
-          include_package_data=True
           )
+
+# Local Variables:
+# compile-command: "py -3.3 setup.py bdist_egg"
+# End:
+
+# c:\python33-64\lib\site-packages
+# c:\python33-64\scripts

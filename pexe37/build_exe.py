@@ -66,6 +66,10 @@ def main():
                         help="""destination directory""",
                         dest="destdir")
 
+    parser.add_argument("-l", "--library",
+                        help="""relative pathname of the python archive""",
+                        dest="libname")
+
     parser.add_argument("-b", "--bundle-files",
                         help=textwrap.dedent("""\
                         How to bundle the files:

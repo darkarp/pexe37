@@ -1,7 +1,7 @@
 r"""zipextimporter - an importer which can import extension modules
 from zipfiles without unpacking them to the file system.
 
-This file and _memimporter.pyd is part of the py2exe package.
+This file and _memimporter.pyd is part of the pexe37 package.
 
 Overview
 ========
@@ -45,7 +45,7 @@ import imp
 import sys
 import zipimport
 
-# _memimporter is a module built into the py2exe runstubs.
+# _memimporter is a module built into the pexe37 runstubs.
 import _memimporter
 
 class ZipExtensionImporter(zipimport.zipimporter):

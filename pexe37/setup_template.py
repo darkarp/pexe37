@@ -109,8 +109,16 @@ $myapp = Target(
 """
 
 OPTIONS = """
-# ``bundle_files`` option explained:
+# ``zipfile`` and ``bundle_files`` options explained:
 # ===================================================
+#
+# zipfile is the Python runtime library for your exe/dll-files; it
+# contains in a ziparchive the modules needed as compiled bytecode.
+#
+# If 'zipfile=None' is used, the runtime library is appended to the
+# exe/dll-files (which will then grow quite large), otherwise the
+# zipfile option should be set to a pathname relative to the exe/dll
+# files, and a library-file shared by all executables will be created.
 #
 # The pexe37 runtime *can* use extension module by directly importing
 # the from a zip-archive - without the need to unpack them to the file
@@ -165,6 +173,7 @@ setup(name="name",
       windows=[$windows],
 
       # pexe37 options
+      zipfile=$zipfile,
       options={"pexe37": pexe37_options},
       )
 """
@@ -188,6 +197,7 @@ def write_setup(args):
         optimize = args.optimize or 0
         compressed = args.compress or False
         destdir = repr(args.destdir)
+        zipfile = repr(args.libname)
 
         packages = ", ".join(args.packages or [])
         bundle_files = args.bundle_files
