@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """setup script for py2exe.
 """
+from setuptools import setup
+from pexe37.pexe37_distutils import Dist, Interpreter, BuildInterpreters
 
 import os
 import sys
@@ -11,12 +13,11 @@ if sys.version_info < (3, 3):
 
 ############################################################################
 
-from setuptools import setup
 ##from distutils.core import setup
 
-from pexe37.pexe37_distutils import Dist, Interpreter, BuildInterpreters
 
 ############################################################################
+
 
 def _is_debug_build():
     import imp
@@ -25,23 +26,27 @@ def _is_debug_build():
             return True
     return False
 
+
 if _is_debug_build():
     macros = [("PYTHONDLL", '\\"python%d%d_d.dll\\"' % sys.version_info[:2]),
-##              ("PYTHONCOM", '\\"pythoncom%d%d_d.dll\\"' % sys.version_info[:2]),
+              ##              ("PYTHONCOM", '\\"pythoncom%d%d_d.dll\\"' % sys.version_info[:2]),
               ("_CRT_SECURE_NO_WARNINGS", '1')]
 else:
     macros = [("PYTHONDLL", '\\"python%d%d.dll\\"' % sys.version_info[:2]),
-##              ("PYTHONCOM", '\\"pythoncom%d%d.dll\\"' % sys.version_info[:2]),
-              ("_CRT_SECURE_NO_WARNINGS", '1'),]
+              ##              ("PYTHONCOM", '\\"pythoncom%d%d.dll\\"' % sys.version_info[:2]),
+              ("_CRT_SECURE_NO_WARNINGS", '1'), ]
 
 macros.append(("Py_BUILD_CORE", '1'))
 
 extra_compile_args = []
 extra_link_args = []
 
-extra_compile_args.append("-IC:\\Program Files\\Microsoft SDKs\\Windows\\v7.0\\Include")
-extra_compile_args.append("-IC:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include")
-extra_compile_args.append("-IC:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10586.0\\ucrt")
+extra_compile_args.append(
+    "-IC:\\Program Files\\Microsoft SDKs\\Windows\\v7.0\\Include")
+extra_compile_args.append(
+    "-IC:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include")
+extra_compile_args.append(
+    "-IC:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10586.0\\ucrt")
 
 if 0:
     # enable this to debug a release build
@@ -68,7 +73,7 @@ run_ctypes_dll = Interpreter("pexe37.run_ctypes_dll",
                                              "DllRegisterServer,PRIVATE",
                                              "DllUnregisterServer,PRIVATE",
                                              ],
-                             target_desc = "shared_library",
+                             target_desc="shared_library",
                              define_macros=macros,
                              extra_compile_args=extra_compile_args,
                              extra_link_args=extra_link_args + ["/DLL"],
@@ -114,7 +119,7 @@ run_w = Interpreter("pexe37.run_w",
 resource_dll = Interpreter("pexe37.resources",
                            ["source/dll.c",
                             "source/icon.rc"],
-                           target_desc = "shared_library",
+                           target_desc="shared_library",
                            extra_link_args=["/DLL"],
                            )
 
@@ -128,14 +133,14 @@ if __name__ == "__main__":
     cmdclass = {'build_interpreters': BuildInterpreters}
 
     setup(name="pexe37",
-          version="0.9.5.0",
+          version="0.9.5.2",
           description="Python to Executable",
           author="darkArp",
           author_email="marionascimento@itsec.bz",
           license="MIT/X11",
           install_requires=["cachetools", "pefile"],
           platforms="Windows",
-          download_url="https://github.com/darkarp/pexe37/archive/v0.9.5.0.zip",
+          download_url="https://github.com/darkarp/pexe37/archive/v0.9.5.2.zip",
 
           classifiers=[
               "Development Status :: 4 - Beta",
@@ -152,15 +157,16 @@ if __name__ == "__main__":
               "Topic :: Software Development :: Libraries :: Python Modules",
               "Topic :: System :: Software Distribution",
               "Topic :: Utilities",
-              ],
+          ],
 
-          distclass = Dist,
-          cmdclass = cmdclass,
-          scripts = ["build_exe.py"],
-          entry_points = {
+          distclass=Dist,
+          cmdclass=cmdclass,
+          scripts=["build_exe.py"],
+          entry_points={
               'console_scripts': ['build_exe = pexe37.build_exe:main'],
-              },
-          interpreters = interpreters,
+          },
+          interpreters=interpreters,
           py_modules=['zipextimporter'],
           packages=['pexe37'],
+          include_package_data=True
           )
