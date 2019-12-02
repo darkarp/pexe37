@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """pexe37 package
 """
-__version__ = '0.9.6.0'
+__version__ = '0.9.6.1'
 
 from .patch_distutils import patch_distutils
 

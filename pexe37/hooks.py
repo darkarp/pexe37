@@ -1,12 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-# Hooks module for pexe37.
-# Inspired by cx_freeze's hooks.py, which is:
-#
-#    Copyright © 2007-2013, Anthony Tuininga.
-#    Copyright © 2001-2006, Computronix (Canada) Ltd., Edmonton, Alberta, Canada.
-#    All rights reserved.
-#
+
 import os, sys
 
 # Exclude modules that the standard library imports (conditionally),
@@ -278,6 +270,8 @@ def hook_win32api(finder, module):
     finder.import_hook("win32timezone")
 
 def hook_tkinter(finder, module):
+    print("Hello")
+'''
     """Recusively copy tcl and tk directories"""
     from tkinter import Tcl
     from _tkinter import TK_VERSION
@@ -309,6 +303,7 @@ def tk_env_paths():
 tk_env_paths()
 del tk_env_paths
 """)
+'''
 
 def hook_six(finder, module):
     """six.py has an object 'moves'. This allows to import
