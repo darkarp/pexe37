@@ -287,7 +287,7 @@ def hook_tkinter(finder, module):
     tk_dir = os.path.join(os.path.dirname(tcl_dir), 'tk{}'.format(TK_VERSION))
     assert os.path.isdir(tk_dir)
     finder.add_datadirectory("lib/tk", tk_dir, recursive=True)
-    finder.set_min_bundle("tkinter", 2)
+    finder.set_min_bundle("tkinter", 1)
     if sys.version_info >= (3,6,0):
         finder.import_hook("imp")
     # add environment variables that point to the copied paths at runtime
