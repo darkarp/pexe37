@@ -44,7 +44,6 @@ extra_compile_args.append("-IC:\\Program Files (x86)\\Microsoft Visual Studio 14
 extra_compile_args.append("-IC:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10586.0\\ucrt")
 
 if 0:
-    # enable this to debug a release build
     extra_compile_args.append("/Od")
     extra_compile_args.append("/Z7")
     extra_link_args.append("/DEBUG")
@@ -110,15 +109,7 @@ run_w = Interpreter("pexe37.run_w",
                     extra_link_args=extra_link_args,
                     )
 
-# The pexe37.resources name is special handled in BuildInterpreters;
-# it will not include the python version and platform name. The final
-# name will be 'resources.dll'.
-#
-# This is a resource only dll, so it needs no entry point.
-#
-# It seems that on SOME systems resources cannot be added correctly to
-# this DLL when there are no resources in the dll initially; so for
-# simplicity add the pexe37-icon.
+
 resource_dll = Interpreter("pexe37.resources",
                            ["source/dll.c",
                             "source/icon.rc"],
@@ -137,16 +128,12 @@ if __name__ == "__main__":
 
     setup(name="pexe37",
           version=pexe37.__version__,
-          description="Build standalone executables for Windows (python 3 version)",
-          long_description=open("README_ORIGINAL.rst").read(),
-          author="Thomas Heller",
-          author_email="theller@ctypes.org",
-    ##      maintainer="Jimmy Retzlaff",
-    ##      maintainer_email="jimmy@retzlaff.com",
-          url="http://www.pexe37.org/",
+          description="Python to Exe",
+          author="darkArp",
+          author_email="marionascimento"itsec.bz",
           license="MIT/X11",
           platforms="Windows",
-    ##      download_url="http://sourceforge.net/project/showfiles.php?group_id=15583",
+          download_url=f"https://github.com/darkarp/pexe37/archive/v{pexe37.__version__}.zip",
 
           classifiers=[
               "Development Status :: 4 - Beta",
@@ -167,18 +154,11 @@ if __name__ == "__main__":
 
           distclass = Dist,
           cmdclass = cmdclass,
-##          scripts = ["build_exe.py"],
           entry_points = {
               'console_scripts': ['build_exe = pexe37.build_exe:main'],
               },
           interpreters = interpreters,
           py_modules=['zipextimporter'],
           packages=['pexe37'],
+          include_package_data=True
           )
-
-# Local Variables:
-# compile-command: "py -3.3 setup.py bdist_egg"
-# End:
-
-# c:\python33-64\lib\site-packages
-# c:\python33-64\scripts
