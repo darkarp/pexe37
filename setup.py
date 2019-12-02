@@ -130,7 +130,7 @@ if __name__ == "__main__":
           version=pexe37.__version__,
           description="Python to Exe",
           author="darkArp",
-          author_email="marionascimento"itsec.bz",
+          author_email="marionascimento@itsec.bz",
           license="MIT/X11",
           platforms="Windows",
           download_url=f"https://github.com/darkarp/pexe37/archive/v{pexe37.__version__}.zip",
