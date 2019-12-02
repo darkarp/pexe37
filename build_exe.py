@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """build_exe script."""
 
-from pexe3.build_exe import main
+from pexe37.build_exe import main
 
 if __name__ == "__main__":
     main()

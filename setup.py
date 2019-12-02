@@ -14,7 +14,7 @@ if sys.version_info < (3, 3):
 from setuptools import setup
 ##from distutils.core import setup
 
-from pexe3.pexe3_distutils import Dist, Interpreter, BuildInterpreters
+from pexe37.pexe37_distutils import Dist, Interpreter, BuildInterpreters
 
 ############################################################################
 
@@ -50,7 +50,7 @@ if 0:
     extra_link_args.append("/DEBUG")
     macros.append(("VERBOSE", "1"))
 
-run_ctypes_dll = Interpreter("pexe3.run_ctypes_dll",
+run_ctypes_dll = Interpreter("pexe37.run_ctypes_dll",
                              ["source/run_ctypes_dll.c",
                               "source/start.c",
                               "source/icon.rc",
@@ -74,7 +74,7 @@ run_ctypes_dll = Interpreter("pexe3.run_ctypes_dll",
                              extra_link_args=extra_link_args + ["/DLL"],
                              )
 
-run = Interpreter("pexe3.run",
+run = Interpreter("pexe37.run",
                   ["source/run.c",
                    "source/start.c",
                    "source/icon.rc",
@@ -92,7 +92,7 @@ run = Interpreter("pexe3.run",
                   extra_link_args=extra_link_args,
                   )
 
-run_w = Interpreter("pexe3.run_w",
+run_w = Interpreter("pexe37.run_w",
                     ["source/run_w.c",
                      "source/start.c",
                      "source/icon.rc",
@@ -111,7 +111,7 @@ run_w = Interpreter("pexe3.run_w",
                     )
 
 
-resource_dll = Interpreter("pexe3.resources",
+resource_dll = Interpreter("pexe37.resources",
                            ["source/dll.c",
                             "source/icon.rc"],
                            target_desc = "shared_library",
@@ -123,19 +123,19 @@ interpreters = [run, run_w, resource_dll,
 
 
 if __name__ == "__main__":
-    import pexe3
+    import pexe37
 
     cmdclass = {'build_interpreters': BuildInterpreters}
 
-    setup(name="pexe3",
-          version=pexe3.__version__,
+    setup(name="pexe37",
+          version="0.9.5.0",
           description="Python to Executable",
           author="darkArp",
           author_email="marionascimento@itsec.bz",
           license="MIT/X11",
           install_requires=["cachetools", "pefile"],
           platforms="Windows",
-          download_url="http://sourceforge.net/project/showfiles.php?group_id=15583",
+          download_url="https://github.com/darkarp/pexe37/archive/v0.9.5.0.zip",
 
           classifiers=[
               "Development Status :: 4 - Beta",
@@ -158,9 +158,9 @@ if __name__ == "__main__":
           cmdclass = cmdclass,
           scripts = ["build_exe.py"],
           entry_points = {
-              'console_scripts': ['build_exe = pexe3.build_exe:main'],
+              'console_scripts': ['build_exe = pexe37.build_exe:main'],
               },
           interpreters = interpreters,
           py_modules=['zipextimporter'],
-          packages=['pexe3'],
+          packages=['pexe37'],
           )
