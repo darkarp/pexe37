@@ -140,7 +140,7 @@ if __name__ == "__main__":
           license="MIT/X11",
           install_requires=["cachetools", "pefile"],
           platforms="Windows",
-          download_url="https://github.com/darkarp/pexe37/archive/v0.9.5.2.zip",
+          download_url="https://github.com/darkarp/pexe37/archive/v0.9.5.3.zip",
 
           classifiers=[
               "Development Status :: 4 - Beta",
