@@ -1,26 +1,3 @@
-/*
- *	   Copyright (c) 2000 - 2013 Thomas Heller
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 #include <windows.h>
 #include <shlobj.h>
 #include <Python.h>
@@ -55,23 +32,7 @@ wchar_t dirname[_MAX_PATH]; // directory part of GetModuleName()
 wchar_t libfilename[_MAX_PATH + _MAX_FNAME + _MAX_EXT]; // library filename
 struct scriptinfo *p_script_info;
 
-/*
-static int dprintf(char *fmt, ...)
-{
-	char Buffer[4096];
-	va_list marker;
-	int result;
 
-	va_start(marker, fmt);
-	result = vsprintf(Buffer, fmt, marker);
-	OutputDebugString(Buffer);
-	return result;
-}
-*/
-
-/*
-  Calculate the directory name where of the executable
- */
 BOOL calc_dirname(HMODULE hmod)
 {
 	int is_special;
@@ -141,33 +102,23 @@ BOOL locate_script(HMODULE hmod)
 	return TRUE; // success
 }
 
-/*
-  Examine the PYTHONINSPECT environment variable (which may have been set by
-  the python script itself), run an interactive Python interpreter if it is
-  set, and finally call Py_Finalize().
- */
+
 void fini(void)
 {
-	/* The standard Python does also allow this: Set PYTHONINSPECT
-	   in the script and examine it afterwards
-	*/
+
 	if (getenv("PYTHONINSPECT") && Py_FdIsInteractive(stdin, "<stdin>"))
 		PyRun_InteractiveLoop(stdin, "<stdin>");
 	/* Clean up */
 	Py_Finalize();
 }
 
-/*
-  This function creates the __main__ module and runs the bootstrap code and
-  the main Python script.
- */
+
 int run_script(void)
 {
 	int rc = 0;
 
-	/* load the code objects to execute */
 	PyObject *m=NULL, *d=NULL, *seq=NULL;
-	/* We execute then in the context of '__main__' */
+
 	m = PyImport_AddModule("__main__");
 	if (m) d = PyModule_GetDict(m);
 	if (d) seq = PyMarshal_ReadObjectFromString(pScript, numScriptBytes);
@@ -182,7 +133,7 @@ int run_script(void)
 					rc = 255;
 				}
 				Py_XDECREF(discard);
-				/* keep going even if we fail */
+	
 			}
 			Py_XDECREF(sub);
 		}
@@ -191,33 +142,12 @@ int run_script(void)
 }
 
 
-/* XXX XXX XXX flags should be set elsewhere */
-/*
-  c:\Python34\include\Python.h
 
-PyAPI_DATA(int) Py_DebugFlag;
-PyAPI_DATA(int) Py_VerboseFlag;
-PyAPI_DATA(int) Py_QuietFlag;
-PyAPI_DATA(int) Py_InteractiveFlag;
-PyAPI_DATA(int) Py_InspectFlag;
-PyAPI_DATA(int) Py_OptimizeFlag;
-PyAPI_DATA(int) Py_NoSiteFlag;
-PyAPI_DATA(int) Py_BytesWarningFlag;
-PyAPI_DATA(int) Py_UseClassExceptionsFlag;
-PyAPI_DATA(int) Py_FrozenFlag;
-PyAPI_DATA(int) Py_IgnoreEnvironmentFlag;
-PyAPI_DATA(int) Py_DontWriteBytecodeFlag;
-PyAPI_DATA(int) Py_NoUserSiteDirectory;
-PyAPI_DATA(int) Py_UnbufferedStdioFlag;
-PyAPI_DATA(int) Py_HashRandomizationFlag;
-PyAPI_DATA(int) Py_IsolatedFlag;
-
- */
 void set_vars(HMODULE hmod_pydll)
 {
 	int *pflag;
 
-/* I'm not sure if the unbuffered code really works... */
+
 	if (p_script_info->unbuffered) {
 		_setmode(_fileno(stdin), O_BINARY);
 		_setmode(_fileno(stdout), O_BINARY);
@@ -253,13 +183,6 @@ void set_vars(HMODULE hmod_pydll)
 	}
 }
 
-/*
-  Load the Python DLL, either from the resource in the library file (if found),
-  or from the file system.
-  
-  This function should also be used to get all the function pointers that
-  python3.c needs at once.
- */
 HMODULE load_pythondll(void)
 {
 	HMODULE hmod_pydll;
