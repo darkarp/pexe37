@@ -80,7 +80,7 @@ def fancy_split(str, sep=","):
 ##     except NameError:
 ##         dirname = sys.prefix
 ##     path = os.path.join(dirname, '%s')
-##     #print "py2exe extension module", __name__, "->", path
+##     #print "pexe37 extension module", __name__, "->", path
 ##     mod = imp.load_dynamic(__name__, path)
 ## ##    mod.frozen = 1
 ## __load()
@@ -91,7 +91,7 @@ def fancy_split(str, sep=","):
 from . import runtime
 
 
-class py2exe(Command):
+class pexe37(Command):
     description = ""
     # List of option tuples: long name, short name (None if no short
     # name), and help string.
@@ -363,7 +363,7 @@ class py2exe(Command):
 
 ##     def create_modulefinder(self):
 ##         from modulefinder import ReplacePackage
-##         from py2exe.mf import ModuleFinder
+##         from pexe37.mf import ModuleFinder
 ##         ReplacePackage("_xmlplus", "xml")
 ##         return ModuleFinder(excludes=self.excludes)
 
@@ -713,7 +713,7 @@ class py2exe(Command):
 
 ##     def get_boot_script(self, boot_type):
 ##         # return the filename of the script to use for com servers.
-##         thisfile = sys.modules['py2exe.build_exe'].__file__
+##         thisfile = sys.modules['pexe37.build_exe'].__file__
 ##         return os.path.join(os.path.dirname(thisfile),
 ##                             "boot_" + boot_type + ".py")
 
@@ -748,8 +748,8 @@ class py2exe(Command):
 ##         # but this is yet to be tested.
 ##         assert len(target.modules)==1, "We only support one service module"
 
-##         cmdline_style = getattr(target, "cmdline_style", "py2exe")
-##         if cmdline_style not in ["py2exe", "pywin32", "custom"]:
+##         cmdline_style = getattr(target, "cmdline_style", "pexe37")
+##         if cmdline_style not in ["pexe37", "pywin32", "custom"]:
 ##             raise RuntimeError("cmdline_handler invalid")
 
 ##         vars = {"service_module_names" : target.modules,
@@ -781,7 +781,7 @@ class py2exe(Command):
 ##                 </trustInfo>
 ##             </assembly>
 ##         """
-##         from py2exe_util import load_resource
+##         from pexe37_util import load_resource
 ##         if os.path.splitext(template)[1]==".exe":
 ##             rid = 1
 ##         else:
@@ -820,7 +820,7 @@ class py2exe(Command):
 ##         # Build an executable for the target
 ##         # template is the exe-stub to use, and arcname is the zipfile
 ##         # containing the python modules.
-##         from py2exe_util import add_resource, add_icon
+##         from pexe37_util import add_resource, add_icon
 ##         ext = os.path.splitext(template)[1]
 ##         exe_base = target.get_dest_base()
 ##         exe_path = os.path.join(self.dist_dir, exe_base + ext)
@@ -979,7 +979,7 @@ class py2exe(Command):
 ##         if version is None:
 ##             return
 
-##         from py2exe.resources.VersionInfo import Version, RT_VERSION, VersionError
+##         from pexe37.resources.VersionInfo import Version, RT_VERSION, VersionError
 ##         version = Version(version,
 ##                           file_description = get("description"),
 ##                           comments = get("comments"),
@@ -995,15 +995,15 @@ class py2exe(Command):
 ##             self.warn("Version Info will not be included:\n  %s" % detail)
 ##             return
 
-##         from py2exe_util import add_resource
+##         from pexe37_util import add_resource
 ##         add_resource(ensure_unicode(exe_path), bytes, RT_VERSION, 1, False)
 
 ##     def patch_python_dll_winver(self, dll_name, new_winver = None):
-##         from py2exe.resources.StringTables import StringTable, RT_STRING
-##         from py2exe_util import add_resource, load_resource
-##         from py2exe.resources.VersionInfo import RT_VERSION
+##         from pexe37.resources.StringTables import StringTable, RT_STRING
+##         from pexe37_util import add_resource, load_resource
+##         from pexe37.resources.VersionInfo import RT_VERSION
 
-##         new_winver = new_winver or self.distribution.metadata.name or "py2exe"
+##         new_winver = new_winver or self.distribution.metadata.name or "pexe37"
 ##         if self.verbose:
 ##             print "setting sys.winver for '%s' to '%s'" % (dll_name, new_winver)
 ##         if self.dry_run:
@@ -1048,9 +1048,9 @@ class py2exe(Command):
 ##         os.utime(dll_name, (st[stat.ST_ATIME], st[stat.ST_MTIME]))
 
 ##     def find_dependend_dlls(self, dlls, pypath, dll_excludes):
-##         import py2exe_util
-##         sysdir = py2exe_util.get_sysdir()
-##         windir = py2exe_util.get_windir()
+##         import pexe37_util
+##         sysdir = pexe37_util.get_sysdir()
+##         windir = pexe37_util.get_windir()
 ##         # This is the tail of the path windows uses when looking for dlls
 ##         # XXX On Windows NT, the SYSTEM directory is also searched
 ##         exedir = os.path.dirname(sys.executable)
@@ -1103,7 +1103,7 @@ class py2exe(Command):
 ##     # find_dependend_dlls()
 
 ##     def get_hidden_imports(self):
-##         # imports done from builtin modules in C code (untrackable by py2exe)
+##         # imports done from builtin modules in C code (untrackable by pexe37)
 ##         return {"time": ["_strptime"],
 ## ##                "datetime": ["time"],
 ##                 "cPickle": ["copy_reg"],
@@ -1182,7 +1182,7 @@ class py2exe(Command):
 ##         # lists
 ##         if sys.platform == "win32":
 ##             # pythoncom and pywintypes are imported via LoadLibrary calls,
-##             # help py2exe to include the dlls:
+##             # help pexe37 to include the dlls:
 ##             if "pythoncom" in modules:
 ##                 import pythoncom
 ##                 dlls.add(pythoncom.__file__)
@@ -1462,7 +1462,7 @@ class py2exe(Command):
 ## # class FileSet()
 
 ## def bin_depends(path, images, excluded_dlls):
-##     import py2exe_util
+##     import pexe37_util
 ##     warnings = FileSet()
 ##     images = FileSet(images)
 ##     dependents = FileSet()
@@ -1474,7 +1474,7 @@ class py2exe(Command):
 ##                 dependents.add(image)
 ##                 abs_image = os.path.abspath(image)
 ##                 loadpath = os.path.dirname(abs_image) + ';' + path
-##                 for result in py2exe_util.depends(image, loadpath).iteritems():
+##                 for result in pexe37_util.depends(image, loadpath).iteritems():
 ##                     dll, uses_import_module = result
 ##                     if os.path.basename(dll).lower() not in excluded_dlls:
 ##                         if isSystemDLL(dll):
@@ -1562,7 +1562,7 @@ class py2exe(Command):
 ##         if not dry_run:
 ##             script = open(script_name, "w")
 ##             script.write("""\
-## from py2exe.build_exe import byte_compile
+## from pexe37.build_exe import byte_compile
 ## from modulefinder import Module
 ## files = [
 ## """)

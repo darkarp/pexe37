@@ -23,7 +23,7 @@ New keywords for distutils' setup function specify what to build:
         defaults to 'library.zip'
 
 
-py2exe options, to be specified in the options keyword to the setup function:
+pexe37 options, to be specified in the options keyword to the setup function:
 
     unbuffered - if true, use unbuffered binary stdout and stderr
     optimize - string or int (0, 1, or 2)
@@ -51,10 +51,10 @@ keys in the dictionary are recognized, most are optional:
     icon_resources - list of 2-tuples (id, pathname)
     other_resources - list of 3-tuples (resource_type, id, datastring)
 """
-# 'import py2exe' imports this package, and two magic things happen:
+# 'import pexe37' imports this package, and two magic things happen:
 #
-# - the 'py2exe.build_exe' submodule is imported and installed as
-#   'distutils.commands.py2exe' command
+# - the 'pexe37.build_exe' submodule is imported and installed as
+#   'distutils.commands.pexe37' command
 #
 # - the default distutils Distribution class is replaced by the
 # special one contained in this module.
@@ -82,6 +82,6 @@ def patch_distutils():
 
     distutils.core.Distribution = Distribution
 
-    distutils.command.__all__.append('py2exe')
+    distutils.command.__all__.append('pexe37')
 
-    sys.modules['distutils.command.py2exe'] = distutils_buildexe
+    sys.modules['distutils.command.pexe37'] = distutils_buildexe

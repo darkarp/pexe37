@@ -11,7 +11,7 @@ HEADER = """\
 # Created by: $created_by
 
 from distutils.core import setup
-import py2exe
+import pexe37
 
 class Target(object):
     '''Target is the baseclass for all executables that are created.
@@ -112,7 +112,7 @@ OPTIONS = """
 # ``bundle_files`` option explained:
 # ===================================================
 #
-# The py2exe runtime *can* use extension module by directly importing
+# The pexe37 runtime *can* use extension module by directly importing
 # the from a zip-archive - without the need to unpack them to the file
 # system.  The bundle_files option specifies where the extension modules,
 # the python dll itself, and other needed dlls are put.
@@ -142,7 +142,7 @@ OPTIONS = """
 #     some dlls, so use with caution.
 
 
-py2exe_options = dict(
+pexe37_options = dict(
     packages = [$packages],
 ##    excludes = "tof_specials Tkinter".split(),
 ##    ignores = "dotblas gnosis.xml.pickle.parsers._cexpat mx.DateTime".split(),
@@ -164,8 +164,8 @@ setup(name="name",
       # windows subsystem executables (no console)
       windows=[$windows],
 
-      # py2exe options
-      options={"py2exe": py2exe_options},
+      # pexe37 options
+      options={"pexe37": pexe37_options},
       )
 """
 
@@ -173,7 +173,7 @@ def write_setup(args):
     with open(args.setup_path, "w", encoding="utf-8") as ofi:
 
         header = Template(HEADER)
-        created_by = " ".join([os.path.basename(sys.executable), "-m", "py2exe"] + sys.argv[1:])
+        created_by = " ".join([os.path.basename(sys.executable), "-m", "pexe37"] + sys.argv[1:])
         print(header.substitute(locals()), file=ofi)
         console = []
         for target in args.script:

@@ -254,7 +254,7 @@ class Runtime(object):
             if not os.path.exists(os.path.dirname(libpath)):
                 os.mkdir(os.path.dirname(libpath))
 
-            dll_bytes = pkgutil.get_data("py2exe", "resources.dll")
+            dll_bytes = pkgutil.get_data("pexe37", "resources.dll")
             with open(libpath, "wb") as ofi:
                   ofi.write(dll_bytes)
             if options.verbose:
@@ -303,7 +303,7 @@ class Runtime(object):
             raise ValueError("Unknown exe_type %r" % target.exe_type)
         ## if self.options.verbose:
         ##     print("Using exe-stub %r" % run_stub)
-        exe_bytes = pkgutil.get_data("py2exe", run_stub)
+        exe_bytes = pkgutil.get_data("pexe37", run_stub)
         if exe_bytes is None:
             raise RuntimeError("run-stub not found")
         return exe_bytes
@@ -497,7 +497,7 @@ class Runtime(object):
                 print("Copy %s to %s" % (pydll, destdir))
             shutil.copy2(pydll, dst)
 #             with UpdateResources(dst, delete_existing=False) as resource:
-#                 resource.add_string(1000, "py2exe")
+#                 resource.add_string(1000, "pexe37")
 
         if self.options.bundle_files == 3:
             # copy extension modules; they go to libdir
@@ -595,13 +595,13 @@ class Runtime(object):
 
         if target.exe_type == "service":
 
-            cmdline_style = getattr(target, "cmdline_style", "py2exe")
-            if cmdline_style not in ["py2exe", "pywin32", "custom"]:
+            cmdline_style = getattr(target, "cmdline_style", "pexe37")
+            if cmdline_style not in ["pexe37", "pywin32", "custom"]:
                 raise RuntimeError("cmdline_handler invalid")
 
             # code for services
             # cmdline_style is one of:
-            # py2exe
+            # pexe37
             # pywin32
             # custom
             code_objects.append(
@@ -609,13 +609,13 @@ class Runtime(object):
                         "<service_info>", "exec",
                         optimize=self.options.optimize))
 
-            boot_code = compile(pkgutil.get_data("py2exe", "boot_service.py"),
+            boot_code = compile(pkgutil.get_data("pexe37", "boot_service.py"),
                                 "boot_service.py", "exec",
                                 optimize=self.options.optimize)
             code_objects.append(boot_code)
 
         elif target.exe_type in ("console_exe", "windows_exe"):
-            boot_code = compile(pkgutil.get_data("py2exe", "boot_common.py"),
+            boot_code = compile(pkgutil.get_data("pexe37", "boot_common.py"),
                                 "boot_common.py", "exec",
                                 optimize=self.options.optimize)
 
@@ -633,7 +633,7 @@ class Runtime(object):
                         "com_module_names", "exec",
                         optimize=self.options.optimize))
 
-            boot_code = compile(pkgutil.get_data("py2exe", "boot_ctypes_com_server.py"),
+            boot_code = compile(pkgutil.get_data("pexe37", "boot_ctypes_com_server.py"),
                                 "boot_ctypes_com_server.py", "exec",
                                 optimize=self.options.optimize)
 

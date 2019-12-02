@@ -133,7 +133,7 @@ if __name__ == "__main__":
     cmdclass = {'build_interpreters': BuildInterpreters}
 
     setup(name="pexe37",
-          version="0.9.5.2",
+          version=pexe37.__version__,
           description="Python to Executable",
           author="darkArp",
           author_email="marionascimento@itsec.bz",

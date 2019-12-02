@@ -98,21 +98,7 @@ BOOL calc_dirname(HMODULE hmod)
 	return TRUE;
 }
 
-/*
-  The executable contains a scriptinfo structure as a resource.
-  
-  This structure contains some flags for the Python interpreter, the pathname
-  of the library relative to the executable (if the pathname is empty the
-  executable is the library itself), and marshalled byte string which is a
-  Python list of code objects that we have to execute.
 
-  The first code objects contain some bootstrap code for py2exe, the last
-  one contains the main script that should be run.
-  
-  This function loads the structure from the resource, sets the pScript
-  pointer to the start of the marshalled byte string, and fills in the global
-  variable 'libfilename' with the absolute pathname of the library file.
- */
 BOOL locate_script(HMODULE hmod)
 {
 	HRSRC hrsrc = FindResourceA(hmod, MAKEINTRESOURCEA(1), "PYTHONSCRIPT");
@@ -260,8 +246,8 @@ void set_vars(HMODULE hmod_pydll)
 
 	pflag = (int *)MyGetProcAddress(hmod_pydll, "Py_VerboseFlag");
 	if (pflag) {
-		if (getenv("PY2EXE_VERBOSE"))
-			*pflag = atoi(getenv("PY2EXE_VERBOSE"));
+		if (getenv("PEXE37_VERBOSE"))
+			*pflag = atoi(getenv("PEXE37_VERBOSE"));
 		else
 			*pflag = 0;
 	}
@@ -350,13 +336,7 @@ int init_with_instance(HMODULE hmod_exe, char *frozen)
 	Py_Initialize();
 
 
-	/* Set sys.frozen so apps that care can tell.  If the caller did pass
-	   NULL, sys.frozen will be set to 'True'.  If a string is passed this
-	   is used as the frozen attribute.  run.c passes "console_exe",
-	   run_w.c passes "windows_exe", run_dll.c passes "dll" This falls
-	   apart when you consider that in some cases, a single process may
-	   end up with two py2exe generated apps - but still, we reset frozen
-	   to the correct 'current' value for the newly initializing app.
+
 	*/
 	if (frozen == NULL)
 		PySys_SetObject("frozen", PyBool_FromLong(1));

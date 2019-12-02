@@ -1,4 +1,4 @@
-# This file is only used when BUILDING py2exe.
+# This file is only used when BUILDING pexe37.
 import os, sys
 
 from distutils.core import Extension

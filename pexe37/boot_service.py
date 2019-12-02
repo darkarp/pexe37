@@ -5,13 +5,13 @@ import servicemanager
 import win32service
 import win32serviceutil
 import winerror
-# We assume that py2exe has magically set service_module_names
+# We assume that pexe37 has magically set service_module_names
 # to the module names that expose the services we host.
 service_klasses = []
 try:
     service_module_names
 except NameError:
-    print("This script is designed to be run from inside py2exe")
+    print("This script is designed to be run from inside pexe37")
     sys.exit(1)
 
 for name in service_module_names:
@@ -46,8 +46,8 @@ else:
 
 ################################################################
 
-if cmdline_style == "py2exe":
-    # Simulate the old py2exe service command line handling (to some extent)
+if cmdline_style == "pexe37":
+    # Simulate the old pexe37 service command line handling (to some extent)
     # This could do with some re-thought
 
     class GetoptError(Exception):
@@ -186,7 +186,7 @@ elif cmdline_style == "pywin32":
 
 elif cmdline_style == "custom":
     assert len(service_module_names) == 1, "Can only handle 1 service!"
-    # Unlike services implemented in .py files, when a py2exe service exe is
+    # Unlike services implemented in .py files, when a pexe37 service exe is
     # executed without args, it may mean the service is being started.
     if len(sys.argv) == 1:
         try:

@@ -1,8 +1,8 @@
 #!/usr/bin/python3,3
 # -*- coding: utf-8 -*-
-"""py2exe package
+"""pexe37 package
 """
-__version__ = '0.9.4.0'
+__version__ = '0.9.5.3'
 
 from .patch_distutils import patch_distutils
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python3.3
 # -*- coding: utf-8 -*-
-"""py2exe.__main__
+"""pexe37.__main__
 """
 
 if __name__ == "__main__":

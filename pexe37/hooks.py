@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Hooks module for py2exe.
+# Hooks module for pexe37.
 # Inspired by cx_freeze's hooks.py, which is:
 #
 #    Copyright © 2007-2013, Anthony Tuininga.

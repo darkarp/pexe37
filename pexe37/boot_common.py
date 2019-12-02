@@ -1,4 +1,4 @@
-# Common py2exe boot script - executed for all target types.
+# Common pexe37 boot script - executed for all target types.
 
 # When we are a windows_exe we have no console, and writing to
 # sys.stderr or sys.stdout will sooner or later raise an exception,
@@ -20,7 +20,7 @@
 # More elaborate explanation on why this is needed:
 #
 # The sys.stdout and sys.stderr that GUI programs get (from Windows) are
-# more than useless.  This is not a py2exe problem, pythonw.exe behaves
+# more than useless.  This is not a pexe37 problem, pythonw.exe behaves
 # in the same way.
 #
 # To demonstrate, run this program with pythonw.exe:

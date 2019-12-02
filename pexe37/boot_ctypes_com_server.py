@@ -35,14 +35,14 @@ else:
 # (and hidden imports are currently disabled :)
 #...
 
-# We assume that py2exe has magically set com_module_names
+# We assume that pexe37 has magically set com_module_names
 # to the module names that expose the COM objects we host.
 # Note that here all the COM modules for the app are imported - hence any
 # environment changes (such as sys.stderr redirection) will happen now.
 try:
     com_module_names
 except NameError:
-    print("This script is designed to be run from inside py2exe % s" % str(details))
+    print("This script is designed to be run from inside pexe37 % s" % str(details))
     sys.exit(1)
 
 com_modules = []
