@@ -605,7 +605,7 @@ class Module:
                         raise RuntimeError("compiling %r" % self) from None
                 elif hasattr(self, "__file__") and not self.__file__.endswith(".pyd"):
                     # XXX Remove the following line if the Bug is never triggered!
-                    raise RuntimeError("should read __file__ to get the source???")
+                    print("should read __file__ to get the source???")
         return self.__code_object__
 
 
