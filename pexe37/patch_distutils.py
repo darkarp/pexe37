@@ -60,14 +60,15 @@ keys in the dictionary are recognized, most are optional:
 # special one contained in this module.
 #
 
+
 def patch_distutils():
-    import distutils.dist
-    import distutils.core
-    import distutils.command
+    import setuptools.dist
+    import setuptools._distutils.core
+    import setuptools.command
     import sys
     from . import distutils_buildexe
 
-    class Distribution(distutils.dist.Distribution):
+    class Distribution(setuptools.dist.Distribution):
 
         def __init__(self, attrs):
             self.ctypes_com_server = attrs.pop("ctypes_com_server", [])
@@ -78,10 +79,10 @@ def patch_distutils():
             self.isapi = attrs.pop("isapi", [])
             self.zipfile = attrs.pop("zipfile", "library.zip")
 
-            distutils.dist.Distribution.__init__(self, attrs)
+            setuptools.dist.Distribution.__init__(self, attrs)
 
-    distutils.core.Distribution = Distribution
+    setuptools.core.Distribution = Distribution
 
-    distutils.command.__all__.append('pexe37')
+    setuptools.command.__all__.append('pexe37')
 
     sys.modules['distutils.command.pexe37'] = distutils_buildexe

@@ -1,19 +1,21 @@
 # This file is only used when BUILDING pexe37.
-import os, sys
+import os
+import sys
 
-from distutils.core import Extension
-from distutils.dist import Distribution
-from distutils.command import build_ext, build
-from distutils.sysconfig import customize_compiler
-from distutils.dep_util import newer_group
-from distutils.errors import DistutilsError, DistutilsSetupError, DistutilsPlatformError
-from distutils.errors import CCompilerError, CompileError
-from distutils.util import get_platform
-from distutils import log
+from setuptools import Extension
+from setuptools.dist import Distribution
+from setuptools.command import build_ext, build
 
-# We don't need a manifest in the executable, so monkeypatch the code away:
-from distutils.msvc9compiler import MSVCCompiler
+from setuptools._distutils.sysconfig import customize_compiler
+from setuptools._distutils.dep_util import newer_group
+from setuptools.errors import DistutilsError, DistutilsSetupError, DistutilsPlatformError
+from setuptools.errors import CCompilerError, CompileError
+from setuptools._distutils.util import get_platform
+from setuptools import log
+
+from setuptools._distutils._msvccompiler import MSVCCompiler
 MSVCCompiler.manifest_setup_ldargs = lambda *args: None
+
 
 class Interpreter(Extension):
     def __init__(self, *args, **kw):
@@ -28,7 +30,7 @@ class Interpreter(Extension):
 
 
 class Dist(Distribution):
-    def __init__(self,attrs):
+    def __init__(self, attrs):
         self.interpreters = None
         Distribution.__init__(self, attrs)
 
@@ -37,6 +39,7 @@ class Dist(Distribution):
 
     def has_extensions(self):
         return False
+
 
 class BuildInterpreters(build_ext.build_ext):
     description = "build special python interpreter stubs"
@@ -49,7 +52,7 @@ class BuildInterpreters(build_ext.build_ext):
         # Copied from build_ext.run() except that we use
         # self.interpreters instead of self.extensions and
         # self.build_interpreters() instead of self.build_extensions()
-        from distutils.ccompiler import new_compiler
+        from setuptools._distutils.ccompiler import new_compiler
 
         if not self.interpreters:
             return
@@ -101,9 +104,9 @@ class BuildInterpreters(build_ext.build_ext):
         sources = ext.sources
         if sources is None or not isinstance(sources, (list, tuple)):
             raise DistutilsSetupError(
-                  "in 'interpreters' option (extension '%s'), "
-                  "'sources' must be present and must be "
-                  "a list of source filenames" % ext.name)
+                "in 'interpreters' option (extension '%s'), "
+                "'sources' must be present and must be "
+                "a list of source filenames" % ext.name)
         sources = list(sources)
 
         ext_path = self.get_ext_fullpath(ext.name)
@@ -141,12 +144,12 @@ class BuildInterpreters(build_ext.build_ext):
             macros.append((undef,))
 
         objects = self.compiler.compile(sources,
-                                         output_dir=self.build_temp,
-                                         macros=macros,
-                                         include_dirs=ext.include_dirs,
-                                         debug=self.debug,
-                                         extra_postargs=extra_args,
-                                         depends=ext.depends)
+                                        output_dir=self.build_temp,
+                                        macros=macros,
+                                        include_dirs=ext.include_dirs,
+                                        debug=self.debug,
+                                        extra_postargs=extra_args,
+                                        depends=ext.depends)
 
         # XXX -- this is a Vile HACK!
         #
@@ -167,18 +170,18 @@ class BuildInterpreters(build_ext.build_ext):
         extra_args = ext.extra_link_args or []
 
         # Detect target language, if not provided
-##        language = ext.language or self.compiler.detect_language(sources)
+# language = ext.language or self.compiler.detect_language(sources)
 
-        ## self.compiler.link_shared_object(
-        ##     objects, ext_path,
-        ##     libraries=self.get_libraries(ext),
-        ##     library_dirs=ext.library_dirs,
-        ##     runtime_library_dirs=ext.runtime_library_dirs,
-        ##     extra_postargs=extra_args,
-        ##     export_symbols=self.get_export_symbols(ext),
-        ##     debug=self.debug,
-        ##     build_temp=self.build_temp,
-        ##     target_lang=language)
+        # self.compiler.link_shared_object(
+        # objects, ext_path,
+        # libraries=self.get_libraries(ext),
+        # library_dirs=ext.library_dirs,
+        # runtime_library_dirs=ext.runtime_library_dirs,
+        # extra_postargs=extra_args,
+        # export_symbols=self.get_export_symbols(ext),
+        # debug=self.debug,
+        # build_temp=self.build_temp,
+        # target_lang=language)
 
         # Hm, for Python 3.5 to link a shared library (instead of exe
         # or pyd) we need to add /DLL to the linker arguments.
@@ -194,10 +197,9 @@ class BuildInterpreters(build_ext.build_ext):
                            extra_postargs=extra_args,
                            debug=self.debug)
 
-
     # -- Name generators -----------------------------------------------
 
-    def get_ext_filename (self, inter_name):
+    def get_ext_filename(self, inter_name):
         ext_path = inter_name.split('.')
         if self.debug:
             fnm = os.path.join(*ext_path) + '_d'
@@ -210,8 +212,10 @@ class BuildInterpreters(build_ext.build_ext):
 
 def InstallSubCommands():
     """Adds our own sub-commands to build and install"""
-    has_interpreters = lambda self: self.distribution.has_interpreters()
+
+    def has_interpreters(self): return self.distribution.has_interpreters()
     buildCmds = [('build_interpreters', has_interpreters)]
     build.build.sub_commands.extend(buildCmds)
+
 
 InstallSubCommands()
